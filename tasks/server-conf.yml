@@ -1,0 +1,19 @@
+---
+- name: "server block"
+  sudo: yes
+  template:
+    src: "server.conf.j2"
+    dest: "/etc/nginx/sites-available/phpmyadmin"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "phpmyadmin server restart"
+
+- name: "server config symlink"
+  sudo: yes
+  file:
+    src: "/etc/nginx/sites-available/phpmyadmin"
+    dest: "/etc/nginx/sites-enabled/phpmyadmin"
+    state: link
+    force: yes
+  notify: "phpmyadmin server restart"

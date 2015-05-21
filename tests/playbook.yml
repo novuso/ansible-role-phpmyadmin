@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars:
+  - phpmyadmin_hostname: "phpmyadmin"
+  - phpmyadmin_mysql_admin_pass: "some_secret"
+  - phpmyadmin_mysql_app_pass: "app_pass"
+  roles:
+  - novuso.nginx
+  - novuso.php-ext
+  - novuso.php-fpm
+  - ansible-role-phpmyadmin

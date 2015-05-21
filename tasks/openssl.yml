@@ -1,0 +1,31 @@
+---
+- name: "keys directory"
+  sudo: yes
+  file:
+    dest: "/srv/ssl/private"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  when: phpmyadmin_force_ssl
+
+- name: "certs directory"
+  sudo: yes
+  file:
+    dest: "/srv/ssl/certs"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: phpmyadmin_force_ssl
+
+- name: "self-signed cert"
+  sudo: yes
+  no_log: True
+  command: >
+    openssl req -x509 -nodes -days 3650 -newkey rsa:2048
+    -keyout /srv/ssl/private/phpmyadmin.key
+    -out /srv/ssl/certs/phpmyadmin.crt
+    -subj "/C=US/ST=/L=/O=/OU=/CN={{ phpmyadmin_hostname }}/emailAddress=/"
+    creates=/srv/ssl/certs/phpmyadmin.crt
+  when: phpmyadmin_force_ssl

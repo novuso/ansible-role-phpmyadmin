@@ -1,0 +1,28 @@
+---
+- include: "mcrypt.yml"
+- include: "preconfig.yml"
+
+- name: "phpmyadmin installed"
+  sudo: yes
+  apt:
+    name: "phpmyadmin"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  notify: "phpmyadmin server restart"
+
+- include: "permissions.yml"
+- include: "openssl.yml"
+
+- include: "vhost-conf.yml"
+  when: phpmyadmin_server == 'apache'
+
+- include: "server-conf.yml"
+  when: phpmyadmin_server == 'nginx'
+
+- name: "force ssl"
+  sudo: yes
+  lineinfile:
+    dest: "/etc/phpmyadmin/config.inc.php"
+    line: "$cfg['ForceSSL'] = true;"
+  when: phpmyadmin_force_ssl

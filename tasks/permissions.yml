@@ -1,0 +1,45 @@
+---
+- name: "blowfish_secret permissions"
+  sudo: yes
+  file:
+    dest: "/var/lib/phpmyadmin/blowfish_secret.inc.php"
+    state: file
+    owner: "root"
+    group: "{{ phpmyadmin_group }}"
+    mode: "0640"
+
+- name: "local config permissions"
+  sudo: yes
+  file:
+    dest: "/var/lib/phpmyadmin/config.inc.php"
+    state: file
+    owner: "root"
+    group: "{{ phpmyadmin_group }}"
+    mode: "0640"
+
+- name: "config-db permissions"
+  sudo: yes
+  file:
+    dest: "/etc/phpmyadmin/config-db.php"
+    state: file
+    owner: "root"
+    group: "{{ phpmyadmin_group }}"
+    mode: "0640"
+
+- name: "htpasswd permissions"
+  sudo: yes
+  file:
+    dest: "/etc/phpmyadmin/htpasswd.setup"
+    state: file
+    owner: "root"
+    group: "{{ phpmyadmin_group }}"
+    mode: "0640"
+
+- name: "tmp upload permissions"
+  sudo: yes
+  file:
+    dest: "/var/lib/phpmyadmin/tmp"
+    state: directory
+    owner: "{{ phpmyadmin_user }}"
+    group: "{{ phpmyadmin_group }}"
+    mode: "0755"
